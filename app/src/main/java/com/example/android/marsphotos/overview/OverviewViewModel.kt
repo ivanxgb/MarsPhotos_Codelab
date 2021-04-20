@@ -20,8 +20,8 @@ class OverviewViewModel : ViewModel() {
     // The external immutable LiveData for the request status
     val status: LiveData<String> = _status
 
-    val _photos: MutableLiveData<MarsPhoto> = MutableLiveData()
-    val photos: LiveData<MarsPhoto> get() = _photos
+    val _photos: MutableLiveData<List<MarsPhoto>> = MutableLiveData()
+    val photos: LiveData<List<MarsPhoto>> get() = _photos
 
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
@@ -38,8 +38,8 @@ class OverviewViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                _photos.value = MarsApi.retrofitService.getPhotos()[0]
-                _status.value = "Primera imagen URL de Marte : ${_photos.value!!.imgSrcUrl}"
+                _photos.value = MarsApi.retrofitService.getPhotos()
+                _status.value = "Objetos Mars. descargados con éxito."
             } catch (e: Exception) {
                 _status.value = "Falla: ${e.message}"
             }
